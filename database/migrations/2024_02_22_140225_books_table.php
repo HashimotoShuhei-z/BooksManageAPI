@@ -15,7 +15,7 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->int('author_id');
+            $table->integer('author_id');
         });
     }
 
