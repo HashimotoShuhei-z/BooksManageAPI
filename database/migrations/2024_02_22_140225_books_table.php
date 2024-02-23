@@ -13,7 +13,7 @@ return new class extends Migration
     {
         //本のテーブルを作成
         Schema::create('books', function (Blueprint $table) {
-            $table->increments('id')->unsigned();
+            $table->integer('id')->unsigned();
             $table->string('title');
             $table->integer('author_id')->unsigned();
         });
