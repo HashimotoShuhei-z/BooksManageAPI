@@ -13,7 +13,7 @@ return new class extends Migration
     {
         //著者のテーブルを作成
         Schema::create('authors', function (Blueprint $table) {
-            $table->increments('id');
+            $table->increments('id')->unsigned();
             $table->string('name');
         });
     }
