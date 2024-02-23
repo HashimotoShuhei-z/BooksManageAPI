@@ -13,9 +13,9 @@ return new class extends Migration
     {
         //本のテーブルを作成
         Schema::create('books', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('id')->unsigned();
             $table->string('title');
-            $table->int('author_id');
+            $table->integer('author_id')->unsigned();
         });
     }
 
