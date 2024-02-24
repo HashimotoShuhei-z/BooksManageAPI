@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use app\Models\Author;
+use App\Models\Author;
 
 class AuthorController extends Controller
 {
@@ -12,8 +12,14 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //
+        //著者の一覧取得
+        $Authors = Author::all();
+        return response()->json([
+            'status' => true,
+            'Authors' => $Authors
+        ]);
     }
+
 
     /**
      * Store a newly created resource in storage.
