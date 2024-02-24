@@ -15,19 +15,19 @@ class books_table_seeder extends Seeder
             [
                 'id'      => '1',
                 'title'     => '基本情報技術者テキスト＆問題集',
-                'author_id'  => '矢沢久雄',
+                'author_id'  => '1',
             ],
 
             [
                 'id'      => '2',
                 'title'     => 'リーダブルコード',
-                'author_id'  => '角征典',
+                'author_id'  => '2',
             ],
 
             [
                 'id'      => '3',
                 'title'     => 'SQLアンチパターン',
-                'author_id'  => 'Bill Karwin',
+                'author_id'  => '3',
             ],
         ]);
     }
