@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         //著者のテーブルを作成
-        Schema::create('authors', function (Blueprint $table) {
+        Schema::create('Authors', function (Blueprint $table) {
             $table->integer('id')->unsigned();
             $table->string('name');
         });
