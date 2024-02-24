@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Book;
+use App\Http\Requests\BookStoreRequest;
+//use Illuminate\Database\Eloquent\Model;
 
 class BookController extends Controller
 {
@@ -14,6 +16,7 @@ class BookController extends Controller
     {
         //本の一覧取得
         $Books = Book::all();
+
         return response()->json([
             'status' => true,
             'Books' => $Books
@@ -23,9 +26,26 @@ class BookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(BookStoreRequest $request)
     {
-        //
+        //本のデータを作成
+        $BookData = new Book;
+
+        $BookData->id = $request->id;
+        $BookData->title = $request->title;
+        $BookData->author_id = $request->author_id;
+
+        //なぜかupdate_atとcreated_atが自動的に追加されてしまうため、記述
+        $BookData->timestamps = false;
+
+        $BookData->save();
+
+        return response()->json([
+        'status' => true,
+        'message' => "BookData Created successfully!",
+        'BookData' => $BookData
+        ], 200);
+
     }
 
     /**
