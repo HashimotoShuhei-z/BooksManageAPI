@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Book;
 
-class BooksController extends Controller
+class BookController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        //本の一覧取得
+        $Books = Book::all();
+        return response()->json([
+            'status' => true,
+            'Books' => $Books
+        ]);
     }
 
     /**
