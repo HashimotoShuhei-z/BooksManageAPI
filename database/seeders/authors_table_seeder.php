@@ -11,7 +11,7 @@ class authors_table_seeder extends Seeder
     public function run()
     {
         //著者のダミーデータを3つ作成
-        DB::table('Authors')->insert([
+        DB::table('authors')->insert([
             [
                 'id'      => '1',
                 'name'     => '角征典',
@@ -19,7 +19,7 @@ class authors_table_seeder extends Seeder
 
             [
                 'id'      => '2',
-                'name'     => 'Bill Karwin',
+                'name'     => 'BillKarwin',
             ],
 
             [
