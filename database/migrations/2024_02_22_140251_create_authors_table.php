@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //本のテーブルを作成
-        Schema::create('Books', function (Blueprint $table) {
-            $table->integer('id')->unsigned();
-            $table->string('title');
-            $table->integer('author_id')->unsigned();
+        //著者のテーブルを作成
+        Schema::create('authors', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('name');
         });
     }
 
@@ -25,6 +24,6 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::dropIfExists('Books');
+        Schema::dropIfExists('authors');
     }
 };
