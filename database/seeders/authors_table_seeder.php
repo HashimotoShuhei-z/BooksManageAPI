@@ -13,17 +13,14 @@ class authors_table_seeder extends Seeder
         //著者のダミーデータを3つ作成
         DB::table('authors')->insert([
             [
-                'id'      => '1',
                 'name'     => '角征典',
             ],
 
             [
-                'id'      => '2',
                 'name'     => 'BillKarwin',
             ],
 
             [
-                'id'      => '3',
                 'name'     => '矢沢久雄',
             ],
         ]);
