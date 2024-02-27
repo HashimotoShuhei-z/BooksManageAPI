@@ -18,8 +18,7 @@ class BookController extends Controller
         $Books = Book::all();
 
         return response()->json([
-            'status' => true,
-            'Books' => $Books
+            'books' => $Books
         ]);
     }
 
@@ -31,19 +30,14 @@ class BookController extends Controller
         //本のデータを作成
         $BookData = new Book;
 
-        $BookData->id = $request->id;
         $BookData->title = $request->title;
         $BookData->author_id = $request->author_id;
-
-        //なぜかupdate_atとcreated_atが自動的に追加されてしまうため、記述
-        $BookData->timestamps = false;
 
         $BookData->save();
 
         return response()->json([
-        'status' => true,
-        'message' => "BookData Created successfully!",
-        'BookData' => $BookData
+        'message' => "bookData created successfully!",
+        'bookData' => $BookData
         ], 200);
 
     }

@@ -13,13 +13,15 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        //著者の一覧取得
-        $Authors = Author::all();
+        $Books = Author::find(1)->books;
 
-        return response()->json([
-            'status' => true,
-            'Authors' => $Authors
-        ]);
+        foreach ($Books as $Book) {
+            $Data[] = $Book;
+        }
+        
+            return response()->json([
+                'author_id=1_Data' => $Data
+            ]);
     }
 
 
@@ -31,18 +33,13 @@ class AuthorController extends Controller
         //著者のデータを作成
         $AuthorData = new Author;
 
-        $AuthorData->id = $request->id;
         $AuthorData->name = $request->name;
-
-        //なぜかupdate_atとcreated_atが自動的に追加されてしまうため、記述
-        $AuthorData->timestamps = false;
 
         $AuthorData->save();
 
         return response()->json([
-        'status' => true,
-        'message' => "AuthorData Created successfully!",
-        'AuthorData' => $AuthorData
+        'message' => "authorData Created successfully!",
+        'authorData' => $AuthorData
         ], 200);
 
     }
