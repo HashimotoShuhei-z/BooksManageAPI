@@ -12,14 +12,24 @@ class BookController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //本の一覧取得
         $Books = Book::all();
+        $title = $request->input("title");
+        $query = Book::query();
 
-        return response()->json([
+        //本のタイトルでの検索機能
+        if(!empty($title)){
+            $answer = $query->where('title', 'LIKE', "%{$title}%")->get();
+            return response()->json([
+                'answerBooks' => $answer
+            ]);
+        } else {
+        //検索しなかった場合は全ての本の一覧表示
+            return response()->json([
             'books' => $Books
         ]);
+        }
     }
 
     /**

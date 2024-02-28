@@ -11,18 +11,26 @@ class AuthorController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $Books = Author::find(1)->books;
+        $name = $request->input("name");
+        $query = Author::query();
+        //著者の名前での検索機能
+        if(!empty($name)){
+            $answers = $query->where('name', 'LIKE', "%{$name}%")->get();
+            foreach($answers as $answer){
+            $Books[] = Author::find($answer->id)->books;
+            }
+        }
 
-        foreach ($Books as $Book) {
+         foreach ($Books as $Book) {
             $Data[] = $Book;
         }
-        
             return response()->json([
-                'author_id=1_Data' => $Data
+                'authorName' => $answer->name,
+                'authorBookData' => $Data
             ]);
-    }
+     }
 
 
     /**
