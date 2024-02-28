@@ -37,18 +37,16 @@ class AuthorController extends Controller
      */
     public function store(AuthorStoreRequest $request)
     {
-        //著者のデータを作成
+        //著者のデータを作成,更新
         $AuthorData = new Author;
 
-        $AuthorData->name = $request->name;
-
-        $AuthorData->save();
-
         return response()->json([
-        'message' => "authorData Created successfully!",
-        'authorData' => $AuthorData
-        ], 200);
-
+            'message' => "authorData created successfully!",
+            'authorData' => $AuthorData->updateOrCreate(
+                ['id' => $request->id],
+                ['name' => $request->name,
+                 'author_id' => $request->author_id])
+            ], 200);
     }
 
 

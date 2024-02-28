@@ -38,17 +38,15 @@ class BookController extends Controller
      */
     public function store(BookStoreRequest $request)
     {
-        //本のデータを作成
+        //本のデータを作成、更新
         $BookData = new Book;
-
-        $BookData->title = $request->title;
-        $BookData->author_id = $request->author_id;
-
-        $BookData->save();
 
         return response()->json([
         'message' => "bookData created successfully!",
-        'bookData' => $BookData
+        'bookData' => $BookData->updateOrCreate(
+            ['id' => $request->id],
+            ['title' => $request->title,
+             'author_id' => $request->author_id])
         ], 200);
 
     }
