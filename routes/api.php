@@ -20,6 +20,9 @@ Route::get('/authors',[AuthorController::class,'index']);
 Route::post('/books',[BookController::class,'store']);
 Route::post('/authors',[AuthorController::class,'store']);
 
+Route::get('/books/{id}', [BookController::class, 'show']);
+Route::get('/authors/{id}', [AuthorController::class, 'show']);
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
