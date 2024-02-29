@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Models\Book;
 use App\Http\Requests\BookStoreRequest;
 use Symfony\Component\HttpFoundation\Response;
-//use Illuminate\Database\Eloquent\Model;
 
 class BookController extends Controller
 {
@@ -15,22 +14,21 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $Books = Book::all();
+        //$Books = Book::all();
         $title = $request->input("title");
         $query = Book::query();
 
         //本のタイトルでの検索機能
         if(!empty($title)){
-            $answer = $query->where('title', 'LIKE', "%{$title}%")->get();
-            return response()->json([
-                'answerBooks' => $answer
-            ]);
-        } else {
-        //検索しなかった場合は全ての本の一覧表示
-            return response()->json([
-            'booksData' => $Books
-        ],200);
+            $query->where('title', 'LIKE', "%{$title}%");
         }
+
+        $books = $query->get();
+
+        return response()->json([
+            'booksData' => $books
+        ],200);
+
     }
 
     /**
@@ -41,13 +39,19 @@ class BookController extends Controller
         //本のデータを作成、更新
         $BookData = new Book;
 
-        return response()->json([
-        'message' => "bookData created successfully!",
-        'bookData' => $BookData->updateOrCreate(
-            ['id' => $request->id],
-            ['title' => $request->title,
-             'author_id' => $request->author_id])
-        ], 200);
+        return response()->json(
+            [
+                'message' => "bookData created successfully!",
+                'bookData' => $BookData->updateOrCreate(
+                    ['id' => $request->id],
+                    [
+                        'title' => $request->title,
+                        'author_id' => $request->author_id
+                    ]
+                )
+            ],
+            200
+        );
 
     }
 
@@ -120,9 +124,12 @@ class BookController extends Controller
 
         $book->delete();
 
-        return response()->json([
-        'message' => "bookData deleted successfully!",
-        'bookData' => $book
-        ], 200);
+        return response()->json(
+            [
+                'message' => "bookData deleted successfully!",
+                'bookData' => $book
+            ],
+            200
+        );
     }
 }

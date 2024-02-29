@@ -14,24 +14,24 @@ class AuthorController extends Controller
      */
     public function index(Request $request)
     {
-        $Authors = Author::all();
+        //$Authors = Author::all();
         $name = $request->input("name");
         $query = Author::query();
 
         //著者の名前での検索機能
         if(!empty($name)){
             $answers = $query->where('name', 'LIKE', "%{$name}%")->get();
-            foreach($answers as $answer){
-            $Books[] = Author::find($answer->id)->books;
-            }
 
+            foreach($answers as $answer){
+                $Books[] = Author::find($answer->id)->books;
+            }
             return response()->json([
-                'authorName' => $answer->name,
-                'authorBookData' => $Books
+                'authorsData' => $Books
             ],200);
         } else {
+            //検索されなかった場合は著者の一覧を表示
             return response()->json([
-                'authorsData' => $Authors
+                'authorsData' => $query
             ],200);
         }
      }
@@ -45,13 +45,19 @@ class AuthorController extends Controller
         //著者のデータを作成,更新
         $AuthorData = new Author;
 
-        return response()->json([
-            'message' => "authorData created successfully!",
-            'authorData' => $AuthorData->updateOrCreate(
-                ['id' => $request->id],
-                ['name' => $request->name,
-                 'author_id' => $request->author_id])
-            ], 200);
+        return response()->json(
+            [
+                'message' => "authorData created successfully!",
+                'authorData' => $AuthorData->updateOrCreate(
+                    ['id' => $request->id],
+                    [
+                        'name' => $request->name,
+                        'author_id' => $request->author_id
+                    ]
+                )
+            ],
+            200
+        );
     }
 
 
@@ -85,10 +91,13 @@ class AuthorController extends Controller
 
         $Books[] = Author::find($id)->books;
 
-            return response()->json([
-                'authorName' => $author->name,
-                'authorBookData' => $Books
-            ]);
+            return response()->json(
+                [
+                    'authorName' => $author->name,
+                    'authorBookData' => $Books
+                ]
+                ,200
+            );
     }
 
     /**
@@ -129,9 +138,12 @@ class AuthorController extends Controller
 
         $author->delete();
 
-        return response()->json([
-            'message' => "authorkData deleted successfully!",
-            'bookData' => $author
-            ], 200);
+        return response()->json(
+            [
+                'message' => "authorkData deleted successfully!",
+                'bookData' => $author
+            ],
+            200
+        );
     }
 }
