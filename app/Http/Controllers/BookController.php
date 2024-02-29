@@ -28,8 +28,8 @@ class BookController extends Controller
         } else {
         //検索しなかった場合は全ての本の一覧表示
             return response()->json([
-            'books' => $Books
-        ]);
+            'booksData' => $Books
+        ],200);
         }
     }
 
@@ -79,7 +79,7 @@ class BookController extends Controller
             );
         }
 
-        return response()->json($book);
+        return response()->json($book,200);
     }
 
     /**
@@ -95,6 +95,34 @@ class BookController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //本の削除処理を実装
+        if (!is_numeric($id) || $id <= 0) {
+            return response()->json(
+                [
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Invalid ID'
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $book = Book::find($id);
+
+        if (!$book) {
+            return response()->json(
+                [
+                    'code' => Response::HTTP_NOT_FOUND,
+                    'message' => 'book not found'
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $book->delete();
+
+        return response()->json([
+        'message' => "bookData deleted successfully!",
+        'bookData' => $book
+        ], 200);
     }
 }

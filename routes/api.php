@@ -23,6 +23,10 @@ Route::post('/authors',[AuthorController::class,'store']);
 Route::get('/books/{id}', [BookController::class, 'show']);
 Route::get('/authors/{id}', [AuthorController::class, 'show']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+Route::post('/books/{id}', [BookController::class, 'destroy']);
+Route::post('/authors/{id}', [AuthorController::class, 'destroy']);
+
+/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+ */

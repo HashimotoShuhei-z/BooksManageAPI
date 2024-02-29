@@ -14,6 +14,7 @@ class AuthorController extends Controller
      */
     public function index(Request $request)
     {
+        $Authors = Author::all();
         $name = $request->input("name");
         $query = Author::query();
 
@@ -23,12 +24,16 @@ class AuthorController extends Controller
             foreach($answers as $answer){
             $Books[] = Author::find($answer->id)->books;
             }
-        }
 
             return response()->json([
                 'authorName' => $answer->name,
                 'authorBookData' => $Books
-            ]);
+            ],200);
+        } else {
+            return response()->json([
+                'authorsData' => $Authors
+            ],200);
+        }
      }
 
 
@@ -79,9 +84,6 @@ class AuthorController extends Controller
         }
 
         $Books[] = Author::find($id)->books;
-        /* foreach ($Books as $Book) {
-            $Data[] = $Book;
-        } */
 
             return response()->json([
                 'authorName' => $author->name,
@@ -102,6 +104,34 @@ class AuthorController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        //著者の削除処理を実装
+        if (!is_numeric($id) || $id <= 0) {
+            return response()->json(
+                [
+                    'code' => Response::HTTP_BAD_REQUEST,
+                    'message' => 'Invalid ID'
+                ],
+                Response::HTTP_BAD_REQUEST
+            );
+        }
+
+        $author = Author::find($id);
+
+        if (!$author) {
+            return response()->json(
+                [
+                    'code' => Response::HTTP_NOT_FOUND,
+                    'message' => 'author not found'
+                ],
+                Response::HTTP_NOT_FOUND
+            );
+        }
+
+        $author->delete();
+
+        return response()->json([
+            'message' => "authorkData deleted successfully!",
+            'bookData' => $author
+            ], 200);
     }
 }
