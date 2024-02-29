@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         //著者のテーブルを作成
-        Schema::create('Authors', function (Blueprint $table) {
-            $table->integer('id')->unsigned();
+        Schema::create('authors', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('name');
+            $table->timestamps();
         });
     }
 

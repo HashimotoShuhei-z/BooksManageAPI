@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         //本のテーブルを作成
-        Schema::create('Books', function (Blueprint $table) {
-            $table->integer('id')->unsigned();
+        Schema::create('books', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('title');
             $table->integer('author_id')->unsigned();
+            $table->timestamps();
+            $table->foreign('author_id')->references('id')->on('authors');
         });
     }
 
@@ -25,6 +27,6 @@ return new class extends Migration
     public function down(): void
     {
         //
-        Schema::dropIfExists('Books');
+        Schema::dropIfExists('books');
     }
 };

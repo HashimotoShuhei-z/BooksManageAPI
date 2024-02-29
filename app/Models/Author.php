@@ -9,5 +9,11 @@ class Author extends Model
 {
     use HasFactory;
 
-    
+    protected $fillable = ['name'];
+    protected $dates =  ['created_at', 'updated_at'];
+
+    public function books()
+    {
+        return $this->hasMany('App\Models\Book');
+    }
 }
