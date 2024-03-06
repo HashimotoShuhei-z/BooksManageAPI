@@ -12,7 +12,7 @@ class Author extends Model
     protected $fillable = ['name'];
     protected $dates =  ['created_at', 'updated_at'];
 
-    public function books()
+    public function CatchBooks()
     {
         return $this->hasMany('App\Models\Book');
     }
