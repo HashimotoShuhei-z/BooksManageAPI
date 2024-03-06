@@ -23,7 +23,7 @@ class AuthorController extends Controller
             $answers = $query->where('name', 'LIKE', "%{$name}%")->get();
 
             foreach($answers as $answer){
-                $Books[] = Author::find($answer->id)->books;
+                $Books[] = Author::find($answer->id)->CatchBooks;
             }
             return response()->json([
                 'authorsData' => $Books
@@ -50,10 +50,7 @@ class AuthorController extends Controller
                 'message' => "authorData created successfully!",
                 'authorData' => $AuthorData->updateOrCreate(
                     ['id' => $request->id],
-                    [
-                        'name' => $request->name,
-                        'author_id' => $request->author_id
-                    ]
+                    ['name' => $request->name]
                 )
             ],
             200
@@ -89,7 +86,7 @@ class AuthorController extends Controller
             );
         }
 
-        $Books[] = Author::find($id)->books;
+        $Books[] = Author::find($id)->CatchBooks;
 
             return response()->json(
                 [

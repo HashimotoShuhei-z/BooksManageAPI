@@ -12,7 +12,7 @@ class Book extends Model
     protected $fillable = ['title','author_id'];
     protected $dates =  ['created_at', 'updated_at'];
 
-    public function authors()
+    public function CatchAuthors()
     {
         return $this->belongsTo('App\Models\Author');
     }
