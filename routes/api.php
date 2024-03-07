@@ -23,6 +23,9 @@ Route::post('/authors',[AuthorController::class,'store']);
 Route::get('/books/{id}', [BookController::class, 'show']);
 Route::get('/authors/{id}', [AuthorController::class, 'show']);
 
+Route::put('/books/{id}', [BookController::class, 'update']);
+Route::put('/authors/{id}', [AuthorController::class, 'update']);
+
 Route::post('/books/{id}', [BookController::class, 'destroy']);
 Route::post('/authors/{id}', [AuthorController::class, 'destroy']);
 

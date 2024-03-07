@@ -46,16 +46,13 @@ class AuthorController extends Controller
      */
     public function store(AuthorStoreRequest $request)
     {
-        //著者のデータを作成,更新
-        $AuthorData = new Author;
+        //著者のデータを作成
+        $AuthorData = Author::create($request->all());
 
         return response()->json(
             [
                 'message' => "authorData created successfully!",
-                'authorData' => $AuthorData->updateOrCreate(
-                    ['id' => $request->id],
-                    ['name' => $request->name]
-                )
+                'book' => $AuthorData
             ],
             200
         );
@@ -104,9 +101,26 @@ class AuthorController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(AuthorStoreRequest $request, string $id)
     {
-        //
+        //著者のデータを更新処理を実装
+        $query = Author::query();
+        $query->where('id', $id);
+
+        if ($query) {
+            $query->update($request->all());
+
+            return response()->json([
+                'message'=> 'Author update',
+                'Author' => $request->all()
+            ], 200);
+        } else {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => 'Book not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
     }
 
     /**
