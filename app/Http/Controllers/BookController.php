@@ -23,10 +23,8 @@ class BookController extends Controller
             $query->where('title', 'LIKE', "%{$title}%");
         }
 
-        $books = $query->get();
-
         return response()->json([
-            'booksData' => $books
+            'books' => $query->get()
         ],200);
 
     }
@@ -42,7 +40,7 @@ class BookController extends Controller
         return response()->json(
             [
                 'message' => "bookData created successfully!",
-                'bookData' => $BookData->updateOrCreate(
+                'book' => $BookData->updateOrCreate(
                     ['id' => $request->id],
                     [
                         'title' => $request->title,
@@ -127,7 +125,7 @@ class BookController extends Controller
         return response()->json(
             [
                 'message' => "bookData deleted successfully!",
-                'bookData' => $book
+                'book' => $book
             ],
             200
         );

@@ -14,7 +14,6 @@ class AuthorController extends Controller
      */
     public function index(Request $request)
     {
-        //$Authors = Author::all();
         $name = $request->input("name");
         $query = Author::query();
 
@@ -23,15 +22,20 @@ class AuthorController extends Controller
             $answers = $query->where('name', 'LIKE', "%{$name}%")->get();
 
             foreach($answers as $answer){
-                $Books[] = Author::find($answer->id)->CatchBooks;
+                $author_data[] = [
+                    'authorName' => $answer->name,
+                    'book' => $answer->books
+                ];
             }
-            return response()->json([
-                'authorsData' => $Books
-            ],200);
+                //著者の名前も一緒に表示したい
+                return response()->json([
+                    'answer' => $author_data
+                ],200);
+
         } else {
             //検索されなかった場合は著者の一覧を表示
             return response()->json([
-                'authorsData' => $query
+                'authors' => $query->get()
             ],200);
         }
      }
@@ -86,12 +90,12 @@ class AuthorController extends Controller
             );
         }
 
-        $Books[] = Author::find($id)->CatchBooks;
+        $Books[] = $author->books;
 
             return response()->json(
                 [
                     'authorName' => $author->name,
-                    'authorBookData' => $Books
+                    'book' => $Books
                 ]
                 ,200
             );
@@ -137,8 +141,8 @@ class AuthorController extends Controller
 
         return response()->json(
             [
-                'message' => "authorkData deleted successfully!",
-                'bookData' => $author
+                'message' => "authorData deleted successfully!",
+                'book' => $author
             ],
             200
         );
