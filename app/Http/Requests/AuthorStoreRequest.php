@@ -25,7 +25,7 @@ class AuthorStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string'
+            'name' => 'required|string',
         ];
     }
 
@@ -33,7 +33,7 @@ class AuthorStoreRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json([
             'code' => Response::HTTP_BAD_REQUEST,
-            'error' => $validator->errors()
+            'error' => $validator->errors(),
         ], Response::HTTP_BAD_REQUEST));
     }
 }

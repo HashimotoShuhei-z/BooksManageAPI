@@ -10,7 +10,8 @@ class Author extends Model
     use HasFactory;
 
     protected $fillable = ['name'];
-    protected $dates =  ['created_at', 'updated_at'];
+
+    protected $dates = ['created_at', 'updated_at'];
 
     public function books()
     {

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Book;
 use App\Http\Requests\BookStoreRequest;
+use App\Models\Book;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
@@ -14,17 +14,17 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        $title = $request->input("title");
+        $title = $request->input('title');
         $query = Book::query();
 
         //本のタイトルでの検索機能
-        if(!empty($title)){
+        if (! empty($title)) {
             $query->where('title', 'LIKE', "%{$title}%");
         }
 
         return response()->json([
-            'books' => $query->get()
-        ],200);
+            'books' => $query->get(),
+        ], 200);
 
     }
 
@@ -38,8 +38,8 @@ class BookController extends Controller
 
         return response()->json(
             [
-                'message' => "BookData created successfully!",
-                'book' => $BookData
+                'message' => 'BookData created successfully!',
+                'book' => $BookData,
             ],
             200
         );
@@ -52,11 +52,11 @@ class BookController extends Controller
     public function show(string $id)
     {
         //本の詳細を表示
-        if (!is_numeric($id) || $id <= 0) {
+        if (! is_numeric($id) || $id <= 0) {
             return response()->json(
                 [
                     'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Invalid ID'
+                    'message' => 'Invalid ID',
                 ],
                 Response::HTTP_BAD_REQUEST
             );
@@ -64,17 +64,17 @@ class BookController extends Controller
 
         $book = Book::find($id);
 
-        if (!$book) {
+        if (! $book) {
             return response()->json(
                 [
                     'code' => Response::HTTP_NOT_FOUND,
-                    'message' => 'Book not found'
+                    'message' => 'Book not found',
                 ],
                 Response::HTTP_NOT_FOUND
             );
         }
 
-        return response()->json($book,200);
+        return response()->json($book, 200);
     }
 
     /**
@@ -85,13 +85,13 @@ class BookController extends Controller
         //本のデータを更新処理を実装
         $query = Book::query();
         $query->where('id', $id);
-        
+
         if ($query) {
             $query->update($request->all());
 
             return response()->json([
-                'message'=> 'Book update',
-                'book' => $request->all()
+                'message' => 'Book update',
+                'book' => $request->all(),
             ], 200);
         } else {
             return response()->json([
@@ -108,11 +108,11 @@ class BookController extends Controller
     public function destroy(string $id)
     {
         //本の削除処理を実装
-        if (!is_numeric($id) || $id <= 0) {
+        if (! is_numeric($id) || $id <= 0) {
             return response()->json(
                 [
                     'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Invalid ID'
+                    'message' => 'Invalid ID',
                 ],
                 Response::HTTP_BAD_REQUEST
             );
@@ -120,11 +120,11 @@ class BookController extends Controller
 
         $book = Book::find($id);
 
-        if (!$book) {
+        if (! $book) {
             return response()->json(
                 [
                     'code' => Response::HTTP_NOT_FOUND,
-                    'message' => 'Book not found'
+                    'message' => 'Book not found',
                 ],
                 Response::HTTP_NOT_FOUND
             );
@@ -134,8 +134,8 @@ class BookController extends Controller
 
         return response()->json(
             [
-                'message' => "BookData deleted successfully!",
-                'book' => $book
+                'message' => 'BookData deleted successfully!',
+                'book' => $book,
             ],
             200
         );
