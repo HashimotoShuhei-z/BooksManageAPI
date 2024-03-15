@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -10,8 +11,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
 {
-    //ログイン機能
-    public function index(Request $request)
+    //ユーザーログイン機能
+    public function userLogin(Request $request)
     {
         $email = $request->email;
         //バリデーション,$thisの部分が謎
@@ -20,6 +21,9 @@ class LoginController extends Controller
         //ログイン成功した場合
         if (Auth::attempt($credentials)) {
             $user = User::where('email', $email)->first();
+            //tokenを取得するユーザーの権限を設定
+            $abilities = ['user'];
+
             //既存トークン削除
             $user->tokens()->delete();
 
@@ -28,11 +32,44 @@ class LoginController extends Controller
             $user->save();
 
             $result = [
-                'token' => $user->createToken("login:user{$user->id}")->plainTextToken,
+                'token' => $user->createToken("login:user{$user->id}", $abilities)->plainTextToken,
             ];
 
             return response()->json($result, Response::HTTP_OK);
-            //}
+        }
+
+        //ログイン失敗した場合
+        return response()->json([
+            'code' => Response::HTTP_UNAUTHORIZED,
+            'message' => 'Unauthorized',
+        ], Response::HTTP_UNAUTHORIZED);
+    }
+
+    //管理者ログイン機能
+    public function adminLogin(Request $request)
+    {
+        $email = $request->email;
+        //バリデーション,$thisの部分が謎
+        $credentials = $this->validator($request);
+
+        //ログイン成功した場合
+        if (Auth::guard('admin')->attempt($credentials)) {
+            $admin = Admin::where('email', $email)->first();
+            //tokenを取得するユーザーの権限を設定
+            $abilities = ['admin'];
+
+            //既存トークン削除
+            $admin->tokens()->delete();
+
+            $admin->email_verified_at = new Carbon('now');
+            //adminデータを更新
+            $admin->save();
+
+            $result = [
+                'token' => $admin->createToken("login:admin{$admin->id}", $abilities)->plainTextToken,
+            ];
+
+            return response()->json($result, Response::HTTP_OK);
         }
 
         //ログイン失敗した場合

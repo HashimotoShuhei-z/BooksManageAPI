@@ -3,7 +3,6 @@
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LoginController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,14 +16,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [LoginController::class, 'index'])->name('login');
+Route::post('user/login', [LoginController::class, 'userLogin']);
 
-Route::middleware('auth:sanctum')->group(function () {
+Route::post('admin/login', [LoginController::class, 'adminLogin']);
 
-    //Tokenが間違っていた場合の処理はどこに書く？
-    Route::get('/user', [LoginController::class, 'user']);
+//2つのグループでエンドポイントが被るとエラー出る
+//<対処法>被ってるEPをまとめて記述するorエンドポイントを分ける
 
-    Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::prefix('admin')->middleware('auth:sanctum', 'abilities:admin')->group(function () {
 
     Route::get('/books', [BookController::class, 'index']);
     Route::get('/authors', [AuthorController::class, 'index']);
@@ -43,7 +42,16 @@ Route::middleware('auth:sanctum')->group(function () {
 
 });
 
-/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::prefix('user')->middleware('auth:sanctum', 'abilities:user')->group(function () {
+
+    Route::get('/user', [LoginController::class, 'user']);
+
+    Route::post('/logout', [LoginController::class, 'logout']);
+
+    Route::get('/books', [BookController::class, 'index']);
+    Route::get('/authors', [AuthorController::class, 'index']);
+
+    Route::get('/books/{id}', [BookController::class, 'show']);
+    Route::get('/authors/{id}', [AuthorController::class, 'show']);
+
 });
- */
