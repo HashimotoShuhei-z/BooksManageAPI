@@ -27,7 +27,7 @@ class BookStoreRequest extends FormRequest
         return [
             'title' => 'required|string',
             //存在する著者のidの入力のみ認めたい
-            'author_id' => 'required|integer|exists:authors,id'
+            'author_id' => 'required|integer|exists:authors,id',
         ];
     }
 
@@ -35,7 +35,7 @@ class BookStoreRequest extends FormRequest
     {
         throw new HttpResponseException(response()->json([
             'code' => Response::HTTP_BAD_REQUEST,
-            'error' => $validator->errors()
+            'error' => $validator->errors(),
         ], Response::HTTP_BAD_REQUEST));
-    } 
+    }
 }
