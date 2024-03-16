@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +16,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
+
+Route::post('user/register', [RegisterController::class, 'registerUser']);
+Route::post('admin/register', [RegisterController::class, 'registerAdmin']);
 
 Route::post('user/login', [LoginController::class, 'userLogin']);
 
