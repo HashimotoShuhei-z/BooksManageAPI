@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Symfony\Component\HttpFoundation\Response;
 
-class AuthorStoreRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +25,13 @@ class AuthorStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string',  'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'between:8,30'],
         ];
     }
 
-    protected function failedValidation(Validator $validator): void
+    protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
             'code' => Response::HTTP_BAD_REQUEST,

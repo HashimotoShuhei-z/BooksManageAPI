@@ -1,0 +1,6 @@
+{
+  "rules": {
+      "method_chaining_indentation": true
+  }
+}
+

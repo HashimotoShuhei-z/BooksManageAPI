@@ -9,11 +9,12 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title','author_id'];
-    protected $dates =  ['created_at', 'updated_at'];
+    protected $fillable = ['title', 'author_id'];
 
-    public function authors()
+    protected $dates = ['created_at', 'updated_at'];
+
+    public function author()
     {
-        return $this->belongsTo('App\Models\Author');
+        return $this->belongTo('App\Models\Author');
     }
 }

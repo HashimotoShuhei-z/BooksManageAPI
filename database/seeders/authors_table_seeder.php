@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -13,15 +12,15 @@ class authors_table_seeder extends Seeder
         //著者のダミーデータを3つ作成
         DB::table('authors')->insert([
             [
-                'name'     => '角征典',
+                'name' => '角征典',
             ],
 
             [
-                'name'     => 'BillKarwin',
+                'name' => 'BillKarwin',
             ],
 
             [
-                'name'     => '矢沢久雄',
+                'name' => '矢沢久雄',
             ],
         ]);
     }

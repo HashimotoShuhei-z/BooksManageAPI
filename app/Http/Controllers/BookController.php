@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use App\Models\Book;
 use App\Http\Requests\BookStoreRequest;
+use App\Models\Book;
+use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class BookController extends Controller
@@ -14,20 +14,17 @@ class BookController extends Controller
      */
     public function index(Request $request)
     {
-        //$Books = Book::all();
-        $title = $request->input("title");
+        $title = $request->input('title');
         $query = Book::query();
 
         //本のタイトルでの検索機能
-        if(!empty($title)){
+        if (! empty($title)) {
             $query->where('title', 'LIKE', "%{$title}%");
         }
 
-        $books = $query->get();
-
         return response()->json([
-            'booksData' => $books
-        ],200);
+            'books' => $query->get(),
+        ], 200);
 
     }
 
@@ -36,19 +33,13 @@ class BookController extends Controller
      */
     public function store(BookStoreRequest $request)
     {
-        //本のデータを作成、更新
-        $BookData = new Book;
+        //本のデータを作成
+        $BookData = Book::create($request->all());
 
         return response()->json(
             [
-                'message' => "bookData created successfully!",
-                'bookData' => $BookData->updateOrCreate(
-                    ['id' => $request->id],
-                    [
-                        'title' => $request->title,
-                        'author_id' => $request->author_id
-                    ]
-                )
+                'message' => 'BookData created successfully!',
+                'book' => $BookData,
             ],
             200
         );
@@ -61,11 +52,11 @@ class BookController extends Controller
     public function show(string $id)
     {
         //本の詳細を表示
-        if (!is_numeric($id) || $id <= 0) {
+        if (! is_numeric($id) || $id <= 0) {
             return response()->json(
                 [
                     'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Invalid ID'
+                    'message' => 'Invalid ID',
                 ],
                 Response::HTTP_BAD_REQUEST
             );
@@ -73,25 +64,42 @@ class BookController extends Controller
 
         $book = Book::find($id);
 
-        if (!$book) {
+        if (! $book) {
             return response()->json(
                 [
                     'code' => Response::HTTP_NOT_FOUND,
-                    'message' => 'book not found'
+                    'message' => 'Book not found',
                 ],
                 Response::HTTP_NOT_FOUND
             );
         }
 
-        return response()->json($book,200);
+        return response()->json($book, 200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(BookStoreRequest $request, string $id)
     {
-        //
+        //本のデータを更新処理を実装
+        $query = Book::query();
+        $query->where('id', $id);
+
+        if ($query) {
+            $query->update($request->all());
+
+            return response()->json([
+                'message' => 'Book update',
+                'book' => $request->all(),
+            ], 200);
+        } else {
+            return response()->json([
+                'code' => Response::HTTP_NOT_FOUND,
+                'message' => 'Book not found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
     }
 
     /**
@@ -100,11 +108,11 @@ class BookController extends Controller
     public function destroy(string $id)
     {
         //本の削除処理を実装
-        if (!is_numeric($id) || $id <= 0) {
+        if (! is_numeric($id) || $id <= 0) {
             return response()->json(
                 [
                     'code' => Response::HTTP_BAD_REQUEST,
-                    'message' => 'Invalid ID'
+                    'message' => 'Invalid ID',
                 ],
                 Response::HTTP_BAD_REQUEST
             );
@@ -112,11 +120,11 @@ class BookController extends Controller
 
         $book = Book::find($id);
 
-        if (!$book) {
+        if (! $book) {
             return response()->json(
                 [
                     'code' => Response::HTTP_NOT_FOUND,
-                    'message' => 'book not found'
+                    'message' => 'Book not found',
                 ],
                 Response::HTTP_NOT_FOUND
             );
@@ -126,8 +134,8 @@ class BookController extends Controller
 
         return response()->json(
             [
-                'message' => "bookData deleted successfully!",
-                'bookData' => $book
+                'message' => 'BookData deleted successfully!',
+                'book' => $book,
             ],
             200
         );
